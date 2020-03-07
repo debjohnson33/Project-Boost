@@ -11,6 +11,7 @@ public class Rocket : MonoBehaviour
     [SerializeField] float rcsThrust = 100f;
     [SerializeField] float rcsThrottle = 20f;
     [SerializeField] AudioClip mainEngine;
+    [SerializeField] AudioClip playerDeath;
 
     enum State { Alive, Dying, Transcending }
     State state = State.Alive;
@@ -27,8 +28,8 @@ public class Rocket : MonoBehaviour
     {
         if (state == State.Alive)
         {
-            Thrust();
-            Rotate();
+            RespondToThrustInput();
+            RespondToRotateInput();
         }       
     }
 
@@ -47,6 +48,7 @@ public class Rocket : MonoBehaviour
                 break;
             default:
                 state = State.Dying;
+                audioData.PlayOneShot(playerDeath);
                 Invoke("LoadFirstLevel", 1f);
                 break;
         }
@@ -54,23 +56,19 @@ public class Rocket : MonoBehaviour
 
     private void LoadNextLevel()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
-    private void LoadNextScene()
+    private void LoadFirstLevel()
     {
-        SceneManager.LoadScene(1); // todo allow for more than 2 levels
+        SceneManager.LoadScene(0); // todo allow for more than 2 levels
     }
 
-    private void Thrust()
+    private void RespondToThrustInput()
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            rigidBody.AddRelativeForce(Vector3.up * rcsThrottle);
-            if (!audioData.isPlaying)
-            {
-                audioData.PlayOneShot(mainEngine);
-            }
+            ApplyThrust();
         }
         else
         {
@@ -78,7 +76,16 @@ public class Rocket : MonoBehaviour
         }
     }
 
-    private void Rotate()
+    private void ApplyThrust()
+    {
+        rigidBody.AddRelativeForce(Vector3.up * rcsThrottle);
+        if (!audioData.isPlaying)
+        {
+            audioData.PlayOneShot(mainEngine);
+        }
+    }
+
+    private void RespondToRotateInput()
     {
         rigidBody.freezeRotation = true; // take manual control of rotation
 

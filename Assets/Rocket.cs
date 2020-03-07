@@ -10,6 +10,7 @@ public class Rocket : MonoBehaviour
     AudioSource audioData;
     [SerializeField] float rcsThrust = 100f;
     [SerializeField] float rcsThrottle = 20f;
+    [SerializeField] AudioClip mainEngine;
 
     enum State { Alive, Dying, Transcending }
     State state = State.Alive;
@@ -68,7 +69,7 @@ public class Rocket : MonoBehaviour
             rigidBody.AddRelativeForce(Vector3.up * rcsThrottle);
             if (!audioData.isPlaying)
             {
-                audioData.Play();
+                audioData.PlayOneShot(mainEngine);
             }
         }
         else

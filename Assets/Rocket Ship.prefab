@@ -447,7 +447,8 @@ MonoBehaviour:
   rcsThrust: 100
   rcsThrottle: 15
   mainEngine: {fileID: 8300000, guid: 00d9367b1349e4db8b11e4993d32c82a, type: 3}
-  playerDeath: {fileID: 8300000, guid: 4e741890c17b04eccaa0530f22729824, type: 3}
+  success: {fileID: 8300000, guid: 67ff1884cef494684859a43cb22dd88e, type: 3}
+  death: {fileID: 8300000, guid: 4e741890c17b04eccaa0530f22729824, type: 3}
 --- !u!1 &6502880051045802772
 GameObject:
   m_ObjectHideFlags: 0

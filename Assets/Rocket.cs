@@ -11,7 +11,8 @@ public class Rocket : MonoBehaviour
     [SerializeField] float rcsThrust = 100f;
     [SerializeField] float rcsThrottle = 20f;
     [SerializeField] AudioClip mainEngine;
-    [SerializeField] AudioClip playerDeath;
+    [SerializeField] AudioClip success;
+    [SerializeField] AudioClip death;
 
     enum State { Alive, Dying, Transcending }
     State state = State.Alive;
@@ -43,15 +44,28 @@ public class Rocket : MonoBehaviour
                 print("OK"); // todo remove;
                 break;
             case "Finish":
-                state = State.Transcending;
-                Invoke("LoadNextLevel", 1f);
+                StartSuccessSequence();
                 break;
             default:
-                state = State.Dying;
-                audioData.PlayOneShot(playerDeath);
-                Invoke("LoadFirstLevel", 1f);
+                StartDeathSequence();
                 break;
         }
+    }
+
+    private void StartDeathSequence()
+    {
+        state = State.Dying;
+        audioData.Stop();
+        audioData.PlayOneShot(death);
+        Invoke("LoadFirstLevel", 1f);
+    }
+
+    private void StartSuccessSequence()
+    {
+        state = State.Transcending;
+        audioData.Stop();
+        audioData.PlayOneShot(success);
+        Invoke("LoadNextLevel", 1f);
     }
 
     private void LoadNextLevel()
